@@ -14,7 +14,7 @@
   --secondary-fore-color: #444;
   --back-color: #f8f8f8;
   --secondary-back-color: #f0f0f0;
-  --blockquote-color: #f57c00;
+  --blockquote-color:black;
   --pre-color: #1565c0;
   --border-color: #aaa;
   --secondary-border-color: #ddd;
@@ -23,7 +23,7 @@
   --universal-padding: 0.5rem;
   --universal-border-radius: 0.125rem;
   --a-link-color:blanchedalmond;
-  --a-visited-color:black;
+  --a-visited-color:rgb(255, 255, 255);
 }
 
 html {

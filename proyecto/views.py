@@ -22,10 +22,10 @@ def api(cryptoFrom, cryptoTo):
         'X-CMC_PRO_API_KEY': API_KEY
     }
 
-    session = Session()
-    session.headers.update(headers)
+    sesion = Session()
+    sesion.headers.update(headers)
 
-    respuesta = session.get(url)
+    respuesta = sesion.get(url)
     data = json.loads(respuesta.text)
     try:
         return ('', data['data']['quote'][cryptoFrom]['price'])
@@ -33,7 +33,7 @@ def api(cryptoFrom, cryptoTo):
         errorCodeAPI = data['status']['error_code']
         return ('error', errorCodeAPI)
 
-def ApiError(codigo):
+def ErrorApi(codigo):
     if codigo == 1001:
         msg = "1001 [API_KEY_INVALID] Esta clave de API no es válida."
     elif codigo == 1002:
@@ -77,12 +77,12 @@ def dataQuery(consulta):
 def Saldo():
     Balance = []
     for moneda in cryptos:
-        cryptoBalanceCoin = dataQuery(format(moneda, moneda))
-        if cryptoBalanceCoin[0] == (None,):
-            cryptoBalanceCoin=0
-            Balance.append(cryptoBalanceCoin)
+        cryptoBalancem = dataQuery(format(moneda, moneda))
+        if cryptoBalancem[0] == (None,):
+            cryptoBalancem=0
+            Balance.append(cryptoBalancem)
         else:
-            Balance.append(cryptoBalanceCoin[0][0])
+            Balance.append(cryptoBalancem[0][0])
     return Balance
 
 @app.route("/")
@@ -117,7 +117,7 @@ def purchase():
             validError = "Operación no realizada, la Cantidad tiene que ser un valor numérico y mayor a 0"
             return render_template("purchase.html", menu='purchase',form=form , validError=validError, data=[quant,pu])
 
-        # confirmación moneda distinta
+        # aqui selecionamos  moneda distinta
 
         if selecFrom == selecTo:
             quant = 0
@@ -125,7 +125,7 @@ def purchase():
             cryptoError = "Operación incorrecta, debe elegir dos monedas distintas"
             return render_template("purchase.html", menu='purchase',form=form , cryptoError=cryptoError, data=[quant,pu])
 
-        # confirmación  de calculo entre criptomendas
+        # confirmamos  de calculo entre criptomendas
 
         if selecFrom == 'EUR' and selecTo != 'BTC':
             quant = 0
@@ -143,7 +143,7 @@ def purchase():
         if apiConsult[0] =='error':
             quant = 0
             pu = 0
-            messageError = ApiError(apiConsult[1])
+            messageError = ErrorApi(apiConsult[1])
             errorAPI = "Error API".format(messageError)
             return render_template("purchase.html", menu='purchase', form=form , errorAPI=errorAPI, data=[quant,pu])
         else:
@@ -162,7 +162,7 @@ def purchase():
             validError = "Operación no realizada, la Cantidad tiene que ser un valor numérico y mayor a 0"
             return render_template("purchase.html", menu='purchase', form=form , validError=validError, data=[quant,pu])
 
-        # confirmación de monedas diferentes
+        # aqui confirmación de monedas diferentes
 
         if selecFrom == selecTo:
             quant = 0
@@ -170,7 +170,7 @@ def purchase():
             cryptoError = "Operación incorrecta, debe elegir dos monedas distintas"
             return render_template("purchase.html", menu='purchase', form=form , cryptoError=cryptoError, data=[quant,pu])
 
-        # confirmacion de compatibilidad de compra entre monedas
+        # aqui confirmacion de compatibilidad de compra entre monedas
 
         if selecFrom == 'EUR' and selecTo != 'BTC':
             quant = 0
@@ -184,7 +184,7 @@ def purchase():
             cryptoIncompatible = "Operación incorrecta, no se puede comprar euros con {}".format(selecFrom)
             return render_template("purchase.html", menu='purchase', form=form , cryptoIncompatible=cryptoIncompatible, data=[quant,pu])
 
-        #Calculo de saldo de la moneda con la que se quiere comprar
+        #aqui calculo de saldo de la moneda con la que se quiere comprar
         if selecFrom == 'EUR':
             saldo = 9999999999
         else:
@@ -210,7 +210,7 @@ def purchase():
             if apiConsult[0] =='error':
                 quant = 0
                 pu = 0
-                messageError = ApiError(apiConsult[1])
+                messageError = ErrorApi(apiConsult[1])
                 errorAPI = "Error en la API".format(messageError)
                 return render_template("purchase.html", menu='purchase', form=form , errorAPI=errorAPI, data=[quant,pu])
             else:
@@ -317,7 +317,7 @@ def inverter():
             totalInver = 0
             valorAct = 0
             dif = 0
-            messageError = ApiError(apiConsult[1])
+            messageError = ErrorApi(apiConsult[1])
             errorAPI = "ERROR EN API - {}".format(messageError)
             return render_template("status.html", menu='status', errorAPI=errorAPI, totalInver=totalInver, cryptoBalance=Saldo(), valorAct=valorAct, dif=dif)
         else:

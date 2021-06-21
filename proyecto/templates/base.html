@@ -13,6 +13,7 @@
         <p>Proyecto Botcamp VII</p>
    
     </header>
+    <div class="menu">
     {% if menu == 'index' %}
     <u>Inicio</u> | <a href="/purchase" class="btt">Compra</a> | <a href="/status">Status / Saldo</a>
     {% elif menu == 'purchase' %}
@@ -20,7 +21,7 @@
     {% elif menu == 'status'%}
     <a href="/">Inicio</a> | <a href="/purchase">Compra</a> | <u>Status / Saldo</u>
     {% endif %}
-
+    </div>
     <section>
         {% block content %}{% endblock %}
     </section>

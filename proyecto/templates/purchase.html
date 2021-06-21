@@ -5,21 +5,21 @@
 
 {% block content %}
     <h1 align="center" class="title">[ COMPRA DE CRIPTO_MONEDAS ]</h1>
-    <hr width="50%" size="20" style="color: hsl(0, 0%, 0%);"/>
+    <hr  width="100%" size="20" style="color: hsl(0, 0%, 0%);"/>
     
 
     <form action="/purchase" method="post">
-        <p>From:</p>   
+        <p class="bloque">From:  
         {{ form.hidden_tag() }}
         {{ form.slct_from( style="width:200px") }}
-
-        <p>To:</p>
+    </p>  
+        <p class="bloque">To:
         {{ form.slct_to( style="width:200px") }}
 
         {{ form.inputCantidad( style="width:150px", ) }}
  
         {{ form.submitCalcular()}}
-
+    </p>
         <p>Q:</p> <p>{{result}}</p>
         {% if data[0] >= 1 %}
             <p>{{ "{:,.2f}".format(data[0]) }} {{ data[2] }} </p>
@@ -39,7 +39,7 @@
             <p>{{ cryptoError }}</p>
         {% endif %}
         {% if cryptoIncompatible %}
-            <p>{{ cryptoIncompatible }} <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ "Use Bitcoin para comprar Euros o el resto de monedas" }}</p>
+            <p>{{ cryptoIncompatible }} <br> {{ "Use Bitcoin para comprar Euros o el resto de monedas" }}</p>
         {% endif %}
         {% if alert %}
             <p>{{ alert }}</p>
@@ -56,7 +56,7 @@
 
         {{ form.submitCompra()}}
 
-        <a href="/purchase " >Borrar |</a>
-        <a href="/" >Inicio</a>
+        <a class="menu "href="/purchase " >Borrar |</a>
+        <a class="menu "href="/" >Inicio</a>
     </form>
 {% endblock %}

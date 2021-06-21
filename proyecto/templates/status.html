@@ -3,20 +3,22 @@
 {% block title %} Status - Crypto Converter {% endblock %}
 
 {% block content %}
-    <h1 class="title">ESTADO DE LA INVERSIÓN</h1>
+    <h1 align="center" class="title"></h1align>[/ESTADO DE LA INVERSIÓN\]</h1>
+    <hr  width="100%" size="20" style="color: hsl(0, 0%, 0%);"/>
    
 
     {% if movOrNot == True %}
         {% if errorDB %}
             <h5 >{{ errorDB }}</h5>
         {% endif %}
-        <h2>Inversión:</h2>
-        <h2> 0 €</h2>
+        <h2 class="titulo">Inversión:</h2>
+        <h2 class="bloque"> 0€</h2>
         <h2></h2>
         <br><br><br>
-        <h2>Valor actual:</h2>
-        <h2> 0 €</h2>
-        <h1>SALDO</h1>
+        <h2 class="titulo">Valor actual:</h2>
+        <h2 class="bloque"> 0€</h2>
+        <h1 align="center" class="title">[/SALDO\]</h1>
+        <hr  width="100%" size="20" style="color: hsl(0, 0%, 0%);"/>
         <table>
             <thead>
                 <tr>
