@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block content %}
+    <h1 align="center" class="title">[ MOVIMIENTOS ]</h1>
+    <table WIDTH="97%"  align="center">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>From</th>
+                <th>Q.Inv</th>
+                <th>To</th>
+                <th>Q</th>
+                <th>P</th>
+            </tr>
+        </thead>
+        {% if errorDB %}
+            <h5 class="error_db_index">{{ errorDB }}</h5>
+        {% endif %}
+        <tbody>
+            {% if not registros %}
+                <tr>
+                    <td class="title_sin"> SIN MOVIMIENTOS </td>
+                </tr>
+            {% else %}
+                {% for campo in registros %}
+                    <tr class="movements">
+                        <td>{{ campo[0]}}</td>
+                        <td>{{ campo[1]}}</td>
+                        <td>{{ campo[2]}}</td>
+                        {% if campo[3] >= 1 %}
+                        <td>{{ "{:,.2f}".format(campo[3])}}</td>
+                        {% else %}
+                        <td>{{ "{:,.5f}".format(campo[3])}}</td>
+                        {% endif %}
+                        <td>{{ campo[4] }}</td>
+                        <td>{{ "{:,.2f}".format(campo[5])}}</td>
+                        {% if campo[3]/campo[5] >= 1 %}
+                        <td>{{ "{:,.2f}".format(campo[3]/campo[5]) }}&nbsp;{{ campo[2] }}</td>
+                        {% else %}
+                        <td>{{ "{:,.5f}".format(campo[3]/campo[5]) }}&nbsp;{{ campo[2] }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+        <a href="/status">Status |</a>
+        <a href="/purchase">Compra </a>
+{% endblock %}

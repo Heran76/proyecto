@@ -1,0 +1,15 @@
+.header{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color:black;
+    font-weight: bold;
+    font-size: 1em; color:blanchedalmond;
+    padding: 10px;
+}
+.footer{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    left:0px;
+    background-color:black;
+    font-weight: normal;
+    font-size: 0.8em; color:blanchedalmond;
+    padding: 10px;
+}

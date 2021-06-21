@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %} Compras - Crypto Converter {% endblock %}
+
+
+{% block content %}
+    <h1 align="center" class="title">[ COMPRA DE CRIPTO_MONEDAS ]</h1>
+    <hr width="50%" size="20" style="color: hsl(0, 0%, 0%);"/>
+    
+
+    <form action="/purchase" method="post">
+        <p>From:</p>   
+        {{ form.hidden_tag() }}
+        {{ form.slct_from( style="width:200px") }}
+
+        <p>To:</p>
+        {{ form.slct_to( style="width:200px") }}
+
+        {{ form.inputCantidad( style="width:150px", ) }}
+ 
+        {{ form.submitCalcular()}}
+
+        <p>Q:</p> <p>{{result}}</p>
+        {% if data[0] >= 1 %}
+            <p>{{ "{:,.2f}".format(data[0]) }} {{ data[2] }} </p>
+        {% else %}
+            <p>{{ "{:,.5f}".format(data[0]) }} {{ data[2] }} </p>
+        {% endif %}
+            <p>P.U.:</p>
+        {% if data[1] >= 1 %}
+            <p>{{"{:,.2f}".format(data[1]) }} {{ data[2] }}</p>
+        {% else %}
+            <p>{{"{:,.5f}".format(data[1]) }} {{ data[2] }}</p>
+        {% endif %}
+        {% if validError %}
+            <p>{{ validError }}</p>
+        {% endif %}
+        {% if cryptoError %}
+            <p>{{ cryptoError }}</p>
+        {% endif %}
+        {% if cryptoIncompatible %}
+            <p>{{ cryptoIncompatible }} <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ "Use Bitcoin para comprar Euros o el resto de monedas" }}</p>
+        {% endif %}
+        {% if alert %}
+            <p>{{ alert }}</p>
+        {% endif %}
+        {% if errorAPI %}
+            <p>{{ errorAPI }}</p>
+        {% endif %}
+        {% if errorDB %}
+            <p>{{ errorDB }}</p>
+        {% endif %}
+        {% if sinSaldo %}
+            <p>{{ sinSaldo }}</p>
+        {% endif %}
+
+        {{ form.submitCompra()}}
+
+        <a href="/purchase " >Borrar |</a>
+        <a href="/" >Inicio</a>
+    </form>
+{% endblock %}

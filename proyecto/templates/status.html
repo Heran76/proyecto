@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %} Status - Crypto Converter {% endblock %}
+
+{% block content %}
+    <h1 class="title">ESTADO DE LA INVERSIÓN</h1>
+   
+
+    {% if movOrNot == True %}
+        {% if errorDB %}
+            <h5 >{{ errorDB }}</h5>
+        {% endif %}
+        <h2>Inversión:</h2>
+        <h2> 0 €</h2>
+        <h2></h2>
+        <br><br><br>
+        <h2>Valor actual:</h2>
+        <h2> 0 €</h2>
+        <h1>SALDO</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;BTC</th>
+                    <th>&nbsp;&nbsp;ETH</th>
+                    <th>LTC</th>
+                    <th>BNB</th>
+                    <th>EOS</th>
+                    <th>XLM</th>
+                    <th>TRM</th>
+                    <th>XRP</th>
+                    <th>BCH</th>
+                    <th>USDT</th>
+                    <th>BSV</th>
+                    <th>ADA</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if not cryptoBalance %}
+                    <tr>
+                        <td> SIN INVERSIÓN </td>
+                    </tr>
+                {% else %}
+                <tr>
+                    {% for coins in cryptoBalance %}
+                        <td>{{ coins }}</td>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+      
+    {% else %}
+        {% if errorAPI %}
+            <p>{{ errorAPI }}</p>
+        {% endif %}
+        <h2>Invertido:</h2>
+        {% if totalInver >= 1 %}
+            <h2>{{ "{:,.2f}".format(totalInver) }} €</h2>
+        {% else %}
+            <h2>{{ "{:,.5f}".format(totalInver) }} €</h2>
+        {% endif %}
+        <h2></h2>
+        <br><br>
+        <h2>Valor actual:</h2>
+        {% if valorAct >= 1 %}
+            <h2>{{ "{:,.2f}".format(valorAct) }} €</h2>
+        {% else %}
+            <h2>{{ "{:,.5f}".format(valorAct) }} €</h2>
+        {% endif %}
+        {% if dif > 0 %}
+            <h2>Beneficio:</h2>
+            {% if dif >= 1 %}
+                <h2>{{ "{:,.2f}".format(dif) }} €</h2>
+            {% else %}
+                <h2>{{ "{:,.5f}".format(dif) }} €</h2>
+            {% endif %}
+        {% elif dif < 0 %}
+            <h2>Pérdida:</h2>
+            {% if dif <= -1 %}
+                <h2>{{ "{:,.2f}".format(dif) }} €</h2>
+            {% else %}
+                <h2>{{ "{:,.5f}".format(dif) }} €</h2>
+            {% endif %}
+        {% else %}
+            <h2>Sin pérdida ni ganancia</h2>
+        {% endif %}
+        <h1>SALDO</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;BTC</th>
+                    <th>&nbsp;ETH</th>
+                    <th>XRP</th>
+                    <th>LTC</th>
+                    <th>BCH</th>
+                    <th>BNB</th>
+                    <th>USDT</th>
+                    <th>EOS</th>
+                    <th>BSV</th>
+                    <th>XLM</th>
+                    <th>ADA</th>
+                    <th>TRX</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if not cryptoBalance %}
+                    <tr>
+                        <td> SIN INVERSIÓN </td>
+                    </tr>
+                {% else %}
+                <tr>
+                    {% for coins in cryptoBalance %}
+                        <td>{{ "{:,.2f}".format(coins) }}</td>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+        
+    {% endif %}
+    {% endblock %}
