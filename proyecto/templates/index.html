@@ -3,8 +3,8 @@
 {% block title %} Inicio {% endblock %}
 
 {% block content %}
-    <h1 align="center" class="title">[ MOVIMIENTOS ]</h1>
-    <table WIDTH="97%"  align="center">
+    <h1 align="center" class="titulo">[Movimientos]</h1>
+    <table WIDTH="100%"  align="center">
         <thead>
             <tr>
                 <th>Fecha</th>
@@ -13,40 +13,63 @@
                 <th>Q.Inv</th>
                 <th>To</th>
                 <th>Q</th>
-                <th>P</th>
+                <th>P.U</th>
             </tr>
         </thead>
         {% if errorDB %}
-            <h5 class="error_db_index">{{ errorDB }}</h5>
+            <h5 class="errordb">{{ errorDB }}</h5>
         {% endif %}
         <tbody>
             {% if not registros %}
                 <tr>
-                    <td class="title_sin"> SIN MOVIMIENTOS </td>
+                    <td align="center" class="titulo"> Sin movimientos </td>
                 </tr>
             {% else %}
                 {% for campo in registros %}
                     <tr>
-                        <td>{{ campo[0]}}</td>
-                        <td>{{ campo[1]}}</td>
-                        <td>{{ campo[2]}}</td>
+                        <td>
+                            {{ campo[0]}}
+                        </td>
+                        <td>
+                            {{ campo[1]}}
+                        </td>
+                        <td>{
+                            { campo[2]}}
+                        </td>
                         {% if campo[3] >= 1 %}
-                        <td>{{ "{:,.2f}".format(campo[3])}}</td>
+                        
+                        <td>
+                            {{ "{:,.2f}".format(campo[3])}}
+                        </td>
+                        
                         {% else %}
-                        <td>{{ "{:,.5f}".format(campo[3])}}</td>
+                        <td>
+                            {{ "{:,.5f}".format(campo[3])}}
+                        </td>
+                        
                         {% endif %}
-                        <td>{{ campo[4] }}</td>
-                        <td>{{ "{:,.2f}".format(campo[5])}}</td>
+                        
+                        <td>
+                            {{ campo[4] }}
+                        </td>
+                        <td>
+                            {{ "{:,.2f}".format(campo[5])}}
+                        </td>
                         {% if campo[3]/campo[5] >= 1 %}
-                        <td>{{ "{:,.2f}".format(campo[3]/campo[5]) }}&nbsp;{{ campo[2] }}</td>
+                        <td>
+                            {{ "{:,.2f}".format(campo[3]/campo[5]) }} {{ campo[2] }}
+                        </td>
+                        
                         {% else %}
-                        <td>{{ "{:,.5f}".format(campo[3]/campo[5]) }}&nbsp;{{ campo[2] }}</td>
+                        
+                        <td>{{ "{:,.5f}".format(campo[3]/campo[5]) }} {{ campo[2] }}
+
+                        </td>
                         {% endif %}
                     </tr>
                 {% endfor %}
             {% endif %}
         </tbody>
     </table>
-        <a href="/status">Status |</a>
-        <a href="/purchase">Compra </a>
+       
 {% endblock %}

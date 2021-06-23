@@ -8,8 +8,11 @@ import requests
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 
-BBDD = './data/movimientos.db'
+
+BD = './data/movimientos.db'
 API_KEY=app.config['API_KEY']
+
+
 
 cryptos = ("BTC","ETH", "LTC", "BNB", "EOS", "XLM", "TRX",  "XRP", "BCH", "USDT", "BSV", "ADA")
 
@@ -22,8 +25,10 @@ def api(cryptoFrom, cryptoTo):
         'X-CMC_PRO_API_KEY': API_KEY
     }
 
+
     sesion = Session()
     sesion.headers.update(headers)
+
 
     respuesta = sesion.get(url)
     data = json.loads(respuesta.text)
@@ -33,6 +38,7 @@ def api(cryptoFrom, cryptoTo):
         errorCodeAPI = data['status']['error_code']
         return ('error', errorCodeAPI)
 
+#codigo error conexion API
 def ErrorApi(codigo):
     if codigo == 1001:
         msg = "1001 [API_KEY_INVALID] Esta clave de API no es válida."
@@ -59,9 +65,10 @@ def ErrorApi(codigo):
 
     return msg
 
+
 def dataQuery(consulta):
 
-    conex = sqlite3.connect(BBDD)
+    conex = sqlite3.connect(BD)
     cursor = conex.cursor()
 
     movs = cursor.execute(consulta).fetchall()
@@ -88,13 +95,13 @@ def Saldo():
 @app.route("/")
 def index():
         try:
-            registros = dataQuery("SELECT date, time, moneda_from, cantidad_from, moneda_to, cantidad_to FROM MOVIMIENTOS;")
+            registros = dataQuery("SELECT date, time, moneda_from, cantidad_from, moneda_to, cantidad_to FROM movimientos;")
             return render_template("index.html", menu='index', registros = registros)
 
         except sqlite3.Error:
             registros = None
-            errorDB = "Error en la base de datos, intentelo un poco más tarde"
-            return render_template("index.html", menu='index', errorDB=errorDB, registros=registros)
+            errorbd = "Error en la base de datos, intentelo un poco más tarde"
+            return render_template("index.html", menu='index', errorbd=errorbd, registros=registros)
 
 @app.route("/purchase", methods=['GET', 'POST'])
 def purchase():
@@ -143,8 +150,8 @@ def purchase():
         if apiConsult[0] =='error':
             quant = 0
             pu = 0
-            messageError = ErrorApi(apiConsult[1])
-            errorAPI = "Error API".format(messageError)
+            mesgError = ErrorApi(apiConsult[1])
+            errorAPI = "Error API".format(mesgError)
             return render_template("purchase.html", menu='purchase', form=form , errorAPI=errorAPI, data=[quant,pu])
         else:
             dataQuant = apiConsult[1]
@@ -193,8 +200,8 @@ def purchase():
             except sqlite3.Error:
                 quant = 0
                 pu = 0
-                errorDB = "Error en la base de datos, intentelo en unos minutos"
-                return render_template("purchase.html", menu='purchase', form=form , errorDB=errorDB, data=[quant,pu])
+                errorbd = "Error en la base de datos, intentelo en unos minutos"
+                return render_template("purchase.html", menu='purchase', form=form , errorbd=errorbd, data=[quant,pu])
 
             if saldoStr[0] == (None,):
                 saldo = 0
@@ -210,8 +217,8 @@ def purchase():
             if apiConsult[0] =='error':
                 quant = 0
                 pu = 0
-                messageError = ErrorApi(apiConsult[1])
-                errorAPI = "Error en la API".format(messageError)
+                mesgError = ErrorApi(apiConsult[1])
+                errorAPI = "Error en la API".format(mesgError)
                 return render_template("purchase.html", menu='purchase', form=form , errorAPI=errorAPI, data=[quant,pu])
             else:
                 dataQuant = apiConsult[1]
@@ -221,28 +228,28 @@ def purchase():
 
             if saldo >= quant or selecFrom == 'EUR':
 
-                conex = sqlite3.connect(BBDD)
+                conex = sqlite3.connect(BD)
                 cursor = conex.cursor()
-                mov = "INSERT INTO MOVIMIENTOS(date, time, moneda_from, cantidad_from, moneda_to, cantidad_to  ) VALUES(?, ?, ?, ?, ?, ?);"
+                mov = "INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to  ) VALUES(?, ?, ?, ?, ?, ?);"
 
                 try:
                     cursor.execute(mov, (fecha, hora, selecFrom, float(quant), selecTo, float(units)))
                 except sqlite3.Error:
                     quant = 0
                     pu = 0
-                    errorDB = "Error en la base de datos, intentelo en unos minutos"
-                    return render_template("purchase.html", menu='purchase', form=form , errorDB=errorDB, data=[quant,pu])
+                    errorbd = "Error en la base de datos, intentelo en unos minutos"
+                    return render_template("purchase.html", menu='purchase', form=form , errorbd=errorbd, data=[quant,pu])
 
                 conex.commit()
                 try:
-                    registros = dataQuery("SELECT date, time, moneda_from, cantidad_from, moneda_to, cantidad_to FROM MOVIMIENTOS;")
+                    registros = dataQuery("SELECT date, time, moneda_from, cantidad_from, moneda_to, cantidad_to FROM movimientos;")
                     conex.close()
                     return render_template("index.html", menu='index', form=form, registros=registros)
                 except sqlite3.Error:
                     quant = 0
                     pu = 0
-                    errorDB = "Error en la base de datos, intentelo en unos minutos"
-                    return render_template("purchase.html", menu='purchase', form=form , errorDB=errorDB, data=[quant,pu])
+                    errorbd = "Error en la base de datos, intentelo en unos minutos"
+                    return render_template("purchase.html", menu='purchase', form=form , errorbd=errorbd, data=[quant,pu])
             else:
                 pu = dataQuant
                 sinSaldo = "No dispone de saldo Sufiente en {} para realizar esta operación".format(selecFrom)
@@ -258,26 +265,26 @@ def inverter():
 
     # Calcular Inversion
     try:
-        movOrNot = dataQuery("SELECT date, time, moneda_from, cantidad_from, moneda_to, cantidad_to, FROM MOVIMIENTOS;")
+        movno = dataQuery("SELECT date, time, moneda_from, cantidad_from, moneda_to, cantidad_to, FROM movimientos;")
     except sqlite3.Error:
         totalInver = 0
         valorAct = 0
         dif = 0
-        errorDB = "Error en la base de datos, intentelo en unos minutos"
-        return render_template("status.html", menu='status', errorDB=errorDB, movOrNot=True)
+        errorbd = "Error en la base de datos, intentelo en unos minutos"
+        return render_template("status.html", menu='status', errorbd=errorbd, movno=True)
 
-    if movOrNot == None:
-        return render_template("status.html", menu='status', movOrNot=True)
+    if movno == None:
+        return render_template("status.html", menu='status', movno=True)
 
     try:
-        InverFrom= dataQuery('SELECT SUM(cantidad_from) FROM MOVIMIENTOS WHERE moneda_from LIKE "%EUR%";')
-        InverTo= dataQuery('SELECT SUM(cantidad_from) FROM MOVIMIENTOS WHERE moneda_to LIKE "%EUR%";')
+        InverFrom= dataQuery('SELECT SUM(cantidad_from) FROM movimientos WHERE moneda_from LIKE "%EUR%";')
+        InverTo= dataQuery('SELECT SUM(cantidad_from) FROM movimientos WHERE moneda_to LIKE "%EUR%";')
     except sqlite3.Error:
         totalInver = 0
         valorAct = 0
         dif = 0
-        errorDB = "Error en la base de datos, inténtelo unos minutos"
-        return render_template("status.html", menu='status', errorDB=errorDB, movOrNot=True)
+        errorbd = "Error en la base de datos, inténtelo unos minutos"
+        return render_template("status.html", menu='status', errorbd=errorbd, movno=True)
 
     totalInverFrom = 0
     totalInverTo = 0
@@ -285,8 +292,8 @@ def inverter():
         if InverFrom[i] == (None,):
             totalInverFrom += 0
         else:
-            InverFromInt = InverFrom[i][0]
-            totalInverFrom += InverFromInt
+            Inver_from = InverFrom[i][0]
+            totalInverFrom += Inver_from
 
     for i in range(len(InverTo)):
         if InverTo[i] == (None,):
@@ -304,10 +311,10 @@ def inverter():
         totalInver = 0
         valorAct = 0
         dif = 0
-        errorDB = "Error en la base de datos, inténtelo mas tarde"
-        return render_template("status.html", menu='status', errorDB=errorDB, movOrNot=True)
+        errorbd = "Error en la base de datos, inténtelo mas tarde"
+        return render_template("status.html", menu='status', errorbd=errorbd, movno=True)
 
-    # Calculo Valor Actual de todas las monedas en € y totalizarlas en Status
+    # Calculo Valor Actual de todas las monedas en € y totalizarlas en Status y error
     i = 0
     monedaValorActual = {}
     valorAct = 0
@@ -317,8 +324,8 @@ def inverter():
             totalInver = 0
             valorAct = 0
             dif = 0
-            messageError = ErrorApi(apiConsult[1])
-            errorAPI = "ERROR EN API - {}".format(messageError)
+            mesgError = ErrorApi(apiConsult[1])
+            errorAPI = "ERROR EN API - {}".format(mesgError)
             return render_template("status.html", menu='status', errorAPI=errorAPI, totalInver=totalInver, cryptoBalance=Saldo(), valorAct=valorAct, dif=dif)
         else:
             cotizacion = apiConsult[1]

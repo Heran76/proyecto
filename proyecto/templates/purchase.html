@@ -4,7 +4,7 @@
 
 
 {% block content %}
-    <h1 align="center" class="title">[ COMPRA DE CRIPTO_MONEDAS ]</h1>
+    <h1 align="center" class="titulo">[ COMPRA DE CRIPTO_MONEDAS ]</h1>
     <hr  width="100%" size="20" style="color: hsl(0, 0%, 0%);"/>
     
 
@@ -15,43 +15,67 @@
     </p>  
         <p class="bloque">To:
         {{ form.slct_to( style="width:200px") }}
-
+        Q: 
         {{ form.inputCantidad( style="width:150px", ) }}
  
-        {{ form.submitCalcular()}}
+         {{ form.submitCalcular()}}
     </p>
-        <p>Q:</p> <p>{{result}}</p>
+        <p>Q:</p> 
+        <p>{{result}}</p>
+        
         {% if data[0] >= 1 %}
-            <p>{{ "{:,.2f}".format(data[0]) }} {{ data[2] }} </p>
+            <p>
+                {{ "{:,.2f}".format(data[0]) }} {{ data[2] }} 
+            </p>
         {% else %}
-            <p>{{ "{:,.5f}".format(data[0]) }} {{ data[2] }} </p>
+            <p>
+                {{ "{:,.5f}".format(data[0]) }} {{ data[2] }}
+            </p>
         {% endif %}
             <p>P.U.:</p>
         {% if data[1] >= 1 %}
-            <p>{{"{:,.2f}".format(data[1]) }} {{ data[2] }}</p>
+            <p>
+                {{"{:,.2f}".format(data[1]) }} {{ data[2] }}
+            </p>
         {% else %}
-            <p>{{"{:,.5f}".format(data[1]) }} {{ data[2] }}</p>
+            <p>
+                {{"{:,.5f}".format(data[1]) }} {{ data[2] }}
+            </p>
         {% endif %}
         {% if validError %}
-            <p>{{ validError }}</p>
+            <p class="errordb">
+                {{ validError }}
+            </p>
         {% endif %}
         {% if cryptoError %}
-            <p>{{ cryptoError }}</p>
+            <p class="errordb">
+                {{ cryptoError }}
+            </p>
         {% endif %}
         {% if cryptoIncompatible %}
-            <p>{{ cryptoIncompatible }} <br> {{ "Use Bitcoin para comprar Euros o el resto de monedas" }}</p>
+            <p class="errordb">
+                {{ cryptoIncompatible }} <br> {{ "Use Bitcoin para comprar Euros o el resto de monedas" }}
+            </p>
         {% endif %}
         {% if alert %}
-            <p>{{ alert }}</p>
+            <p>
+                {{ alert }}
+            </p>
         {% endif %}
         {% if errorAPI %}
-            <p>{{ errorAPI }}</p>
+            <p class="errordb">
+                {{ errorAPI }}
+            </p>
         {% endif %}
         {% if errorDB %}
-            <p>{{ errorDB }}</p>
+            <p class="errordb">
+                {{ errorDB }}
+            </p>
         {% endif %}
         {% if sinSaldo %}
-            <p>{{ sinSaldo }}</p>
+            <p class="errordb">
+                {{ sinSaldo }}
+            </p>
         {% endif %}
 
         {{ form.submitCompra()}}

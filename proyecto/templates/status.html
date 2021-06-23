@@ -3,13 +3,13 @@
 {% block title %} Status - Crypto Converter {% endblock %}
 
 {% block content %}
-    <h1 align="center" class="title"></h1align>[/ESTADO DE LA INVERSIÓN\]</h1>
+    <h1 align="center" class="titulo"></h1align>[/ESTADO DE LA INVERSIÓN\]</h1>
     <hr  width="100%" size="20" style="color: hsl(0, 0%, 0%);"/>
    
 
-    {% if movOrNot == True %}
-        {% if errorDB %}
-            <h5 >{{ errorDB }}</h5>
+    {% if movno == True %}
+        {% if errordb %}
+            <h5 class="errordb" >{{ errordb }}</h5>
         {% endif %}
         <h2 class="titulo">Inversión:</h2>
         <h2 class="bloque"> 0€</h2>
@@ -17,13 +17,13 @@
         <br><br><br>
         <h2 class="titulo">Valor actual:</h2>
         <h2 class="bloque"> 0€</h2>
-        <h1 align="center" class="title">[/SALDO\]</h1>
+        <h1 align="center" class="titulo">[/SALDO\]</h1>
         <hr  width="100%" size="20" style="color: hsl(0, 0%, 0%);"/>
         <table>
             <thead>
                 <tr>
-                    <th>&nbsp;&nbsp;&nbsp;&nbsp;BTC</th>
-                    <th>&nbsp;&nbsp;ETH</th>
+                    <th>EUR</th>
+                    <th>BTC</th>
                     <th>LTC</th>
                     <th>BNB</th>
                     <th>EOS</th>
@@ -39,12 +39,12 @@
             <tbody>
                 {% if not cryptoBalance %}
                     <tr>
-                        <td> SIN INVERSIÓN </td>
+                        <td align="center" class="titulo"></tdalign> SIN INVERSIÓN </td>
                     </tr>
                 {% else %}
                 <tr>
-                    {% for coins in cryptoBalance %}
-                        <td>{{ coins }}</td>
+                    {% for moneda in cryptoBalance %}
+                        <td>{{ moneda }}</td>
                     {% endfor %}
                 {% endif %}
             </tbody>
@@ -89,18 +89,19 @@
         <table>
             <thead>
                 <tr>
-                    <th>&nbsp;&nbsp;&nbsp;&nbsp;BTC</th>
-                    <th>&nbsp;ETH</th>
-                    <th>XRP</th>
+                    <th>EUR</th>
+                    <th>BTC</th>
                     <th>LTC</th>
-                    <th>BCH</th>
                     <th>BNB</th>
-                    <th>USDT</th>
                     <th>EOS</th>
-                    <th>BSV</th>
+                    <th>BNB</th>
                     <th>XLM</th>
+                    <th>TRM</th>
+                    <th>XRP</th>
+                    <th>BCH</th>
+                    <th>USDT</th>
+                    <th>BSV</th>
                     <th>ADA</th>
-                    <th>TRX</th>
                 </tr>
             </thead>
             <tbody>
@@ -110,8 +111,8 @@
                     </tr>
                 {% else %}
                 <tr>
-                    {% for coins in cryptoBalance %}
-                        <td>{{ "{:,.2f}".format(coins) }}</td>
+                    {% for moneda in cryptoBalance %}
+                        <td>{{ "{:,.2f}".format(moneda) }}</td>
                     {% endfor %}
                 {% endif %}
             </tbody>
