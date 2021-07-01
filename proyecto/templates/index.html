@@ -3,21 +3,21 @@
 {% block title %} Inicio {% endblock %}
 
 {% block content %}
-    <h1 align="center" class="titulo">[Movimientos]</h1>
+    <h1 align="center"  class="titulo">[Movimientos]</h1>
     <table WIDTH="100%"  align="center">
         <thead>
             <tr>
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>From</th>
-                <th>Q.Inv</th>
+                <th>Q.Inversion</th>
                 <th>To</th>
-                <th>Q</th>
-                <th>P.U</th>
+                <th>Q.Unidad</th>
+                <th>P.Unidad</th>
             </tr>
         </thead>
-        {% if errorDB %}
-            <h5 class="errordb">{{ errorDB }}</h5>
+        {% if errorbd %}
+            <h5 class="errorBD">{{ errorbd }}</h5>
         {% endif %}
         <tbody>
             {% if not registros %}
@@ -33,8 +33,7 @@
                         <td>
                             {{ campo[1]}}
                         </td>
-                        <td>{
-                            { campo[2]}}
+                        <td>{{ campo[2]}}
                         </td>
                         {% if campo[3] >= 1 %}
                         
@@ -62,7 +61,8 @@
                         
                         {% else %}
                         
-                        <td>{{ "{:,.5f}".format(campo[3]/campo[5]) }} {{ campo[2] }}
+                        <td>
+                            {{ "{:.5f}".format(campo[3]/campo[5]) }} {{ campo[2] }}
 
                         </td>
                         {% endif %}

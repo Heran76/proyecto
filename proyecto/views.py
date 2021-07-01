@@ -23,7 +23,7 @@ def api(cryptoFrom, cryptoTo):
     headers = {
         'Accepts': 'application/json',
         'X-CMC_PRO_API_KEY': API_KEY
-    }
+        }
 
 
     sesion = Session()
@@ -84,23 +84,26 @@ def dataQuery(consulta):
 def Saldo():
     Balance = []
     for moneda in cryptos:
-        cryptoBalancem = dataQuery(format(moneda, moneda))
-        if cryptoBalancem[0] == (None,):
-            cryptoBalancem=0
-            Balance.append(cryptoBalancem)
+        Balancecryto = dataQuery("select sum (cantidad_from) as patata from movimientos where moneda_to='"+moneda+"'")
+        #Balancecryto = dataQuery(format(moneda))
+        if Balancecryto[0] == (None):
+            Balancecryto=0
+            Balance.append(Balancecryto)
         else:
-            Balance.append(cryptoBalancem[0][0])
+            Balance.append(Balancecryto[0][0])
     return Balance
 
 @app.route("/")
 def index():
+      
         try:
-            registros = dataQuery("SELECT date, time, moneda_from, cantidad_from, moneda_to, cantidad_to FROM movimientos;")
+            registros = dataQuery("SELECT data, time, moneda_from, cantidad_from, moneda_to, cantidad_to FROM movimientos;")
             return render_template("index.html", menu='index', registros = registros)
 
-        except sqlite3.Error:
+        except sqlite3.Error as errorv:
             registros = None
             errorbd = "Error en la base de datos, intentelo un poco más tarde"
+            print ("se ha producido un error", errorv)
             return render_template("index.html", menu='index', errorbd=errorbd, registros=registros)
 
 @app.route("/purchase", methods=['GET', 'POST'])
@@ -124,7 +127,7 @@ def purchase():
             validError = "Operación no realizada, la Cantidad tiene que ser un valor numérico y mayor a 0"
             return render_template("purchase.html", menu='purchase',form=form , validError=validError, data=[quant,pu])
 
-        # aqui selecionamos  moneda distinta
+        # bloque aqui selecionamos validacion de monedas moneda distinta
 
         if selecFrom == selecTo:
             quant = 0
@@ -132,7 +135,8 @@ def purchase():
             cryptoError = "Operación incorrecta, debe elegir dos monedas distintas"
             return render_template("purchase.html", menu='purchase',form=form , cryptoError=cryptoError, data=[quant,pu])
 
-        # confirmamos  de calculo entre criptomendas
+
+        # bloque confirmamos  de calculo entre criptomendas
 
         if selecFrom == 'EUR' and selecTo != 'BTC':
             quant = 0
@@ -169,7 +173,7 @@ def purchase():
             validError = "Operación no realizada, la Cantidad tiene que ser un valor numérico y mayor a 0"
             return render_template("purchase.html", menu='purchase', form=form , validError=validError, data=[quant,pu])
 
-        # aqui confirmación de monedas diferentes
+        # bloque aqui confirmación de monedas diferentes
 
         if selecFrom == selecTo:
             quant = 0
@@ -177,7 +181,7 @@ def purchase():
             cryptoError = "Operación incorrecta, debe elegir dos monedas distintas"
             return render_template("purchase.html", menu='purchase', form=form , cryptoError=cryptoError, data=[quant,pu])
 
-        # aqui confirmacion de compatibilidad de compra entre monedas
+        # bloque aqui confirmacion de compatibilidad de compra entre monedas
 
         if selecFrom == 'EUR' and selecTo != 'BTC':
             quant = 0
@@ -193,10 +197,11 @@ def purchase():
 
         #aqui calculo de saldo de la moneda con la que se quiere comprar
         if selecFrom == 'EUR':
-            saldo = 9999999999
+            saldo = 99999999
         else:
             try:
-                saldoStr = dataQuery(format(selecFrom, selecFrom))
+                saldoStr = dataQuery(''' (select sum(cantidad_to) as saldo from movimientos where moneda_to"  select sum(cantidad_from) as saldo
+                            from movimientos where moneda_from  ) select sum(Saldo) from Balance;'''.format(selecFrom, selecTo))
             except sqlite3.Error:
                 quant = 0
                 pu = 0
@@ -209,7 +214,7 @@ def purchase():
                 saldo = saldoStr[0][0]
 
         if selecFrom == 'EUR' or saldo != 0:
-
+            #controlar la fecha
             dt = datetime.datetime.now()
             fecha=dt.strftime("%d/%m/%Y")
             hora=dt.strftime("%H:%M:%S")
@@ -230,7 +235,7 @@ def purchase():
 
                 conex = sqlite3.connect(BD)
                 cursor = conex.cursor()
-                mov = "INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to  ) VALUES(?, ?, ?, ?, ?, ?);"
+                mov = "INSERT INTO movimientos (data, time, moneda_from, cantidad_from, moneda_to, cantidad_to) VALUES(?, ?, ?, ?, ?, ?);"
 
                 try:
                     cursor.execute(mov, (fecha, hora, selecFrom, float(quant), selecTo, float(units)))
@@ -242,14 +247,14 @@ def purchase():
 
                 conex.commit()
                 try:
-                    registros = dataQuery("SELECT date, time, moneda_from, cantidad_from, moneda_to, cantidad_to FROM movimientos;")
+                    registros = dataQuery("SELECT data, time, moneda_from, cantidad_from, moneda_to, cantidad_to FROM movimientos;")
                     conex.close()
                     return render_template("index.html", menu='index', form=form, registros=registros)
                 except sqlite3.Error:
                     quant = 0
                     pu = 0
                     errorbd = "Error en la base de datos, intentelo en unos minutos"
-                    return render_template("purchase.html", menu='purchase', form=form , errorbd=errorbd, data=[quant,pu])
+                    return render_template("purchase.html", menu='purchase', form=form, errorbd=errorbd, data=[quant,pu])
             else:
                 pu = dataQuant
                 sinSaldo = "No dispone de saldo Sufiente en {} para realizar esta operación".format(selecFrom)
@@ -265,26 +270,28 @@ def inverter():
 
     # Calcular Inversion
     try:
-        movno = dataQuery("SELECT date, time, moneda_from, cantidad_from, moneda_to, cantidad_to, FROM movimientos;")
-    except sqlite3.Error:
+        movIn = dataQuery("SELECT data, time, moneda_from, cantidad_from, moneda_to, cantidad_to FROM movimientos;")
+    except sqlite3.Error as errostatus:
         totalInver = 0
         valorAct = 0
         dif = 0
         errorbd = "Error en la base de datos, intentelo en unos minutos"
-        return render_template("status.html", menu='status', errorbd=errorbd, movno=True)
+        print("Este es el error del status",errostatus)
+        return render_template("status.html", menu='status', errorbd=errorbd, movIn=True)
 
-    if movno == None:
-        return render_template("status.html", menu='status', movno=True)
+    if movIn == None:
+        return render_template("status.html", menu='status', movIn=True)
 
     try:
-        InverFrom= dataQuery('SELECT SUM(cantidad_from) FROM movimientos WHERE moneda_from LIKE "%EUR%";')
-        InverTo= dataQuery('SELECT SUM(cantidad_from) FROM movimientos WHERE moneda_to LIKE "%EUR%";')
-    except sqlite3.Error:
+        InverFrom= dataQuery('SELECT SUM(cantidad_from) FROM movimientos')
+        InverTo= dataQuery('SELECT SUM(cantidad_from) FROM movimientos')
+    except sqlite3.Error as errostatus2:
         totalInver = 0
         valorAct = 0
         dif = 0
         errorbd = "Error en la base de datos, inténtelo unos minutos"
-        return render_template("status.html", menu='status', errorbd=errorbd, movno=True)
+        print("Este es el error del status",errostatus2)
+        return render_template("status.html", menu='status', errorbd=errorbd, movIn=True)
 
     totalInverFrom = 0
     totalInverTo = 0
@@ -307,19 +314,20 @@ def inverter():
     # Calcular saldo de monedas
     try:
         Saldo()
-    except sqlite3.Error:
+    except sqlite3.Error as errostatus3Error:
         totalInver = 0
         valorAct = 0
         dif = 0
         errorbd = "Error en la base de datos, inténtelo mas tarde"
-        return render_template("status.html", menu='status', errorbd=errorbd, movno=True)
+        print("Este es el error del status3",errostatus3Error)
+        return render_template("status.html", menu='status', errorbd=errorbd, movIn=True)
 
     # Calculo Valor Actual de todas las monedas en € y totalizarlas en Status y error
     i = 0
     monedaValorActual = {}
     valorAct = 0
     for moneda in cryptos:
-        apiConsult = api('EUR',moneda)
+        apiConsult = api(moneda,"EUR")
         if apiConsult[0] =='error':
             totalInver = 0
             valorAct = 0
@@ -329,8 +337,8 @@ def inverter():
             return render_template("status.html", menu='status', errorAPI=errorAPI, totalInver=totalInver, cryptoBalance=Saldo(), valorAct=valorAct, dif=dif)
         else:
             cotizacion = apiConsult[1]
-            saldocript = Saldo()[i]
-            monedaValorActual[moneda] = cotizacion * saldocript
+            saldocript = Saldo()[0]
+            monedaValorActual[moneda] = cotizacion 
             valorAct += monedaValorActual[moneda]
             i += 1
 
