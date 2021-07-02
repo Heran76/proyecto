@@ -23,11 +23,11 @@ pip install -r requirements.txt
 ## 4. Crear base de datos ejecutando el fichero migrations/inital.sgl
    
    - Puedes hacerlo con un cliente gráfico o con squlite3
-   - Ejecutar lo siguiente : 
-    -  sqlite3 <ruta al fichero es la carpeta data>
-    -  .read <ruta relativa a migrations/initial.sql>
-    -  .tables comprobar que la tabla se creo
-    -  .q para salir de sqlite3
+   1. Ejecutar lo siguiente : 
+      - sqlite3 <ruta al fichero es la carpeta data>
+        - .read <ruta relativa a migrations/initial.sql>
+          - .tables comprobar que la tabla se creo
+            - .q para salir de sqlite3
   
 ## 5. lanzar la a plicación.
  
