@@ -1,2 +1,0 @@
-SECRET_KEY='QxwowdF$f)>NE}AoCy/SP|h5Tb6h2'
-API_KEY='1ce220db-5044-462d-9bdb-f46d27d98f63'
