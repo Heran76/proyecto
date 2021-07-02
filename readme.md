@@ -24,10 +24,10 @@ pip install -r requirements.txt
    
    - Puedes hacerlo con un cliente gráfico o con squlite3
    1. Ejecutar lo siguiente : 
-      - sqlite3 <ruta al fichero es la carpeta data>
-        - .read <ruta relativa a migrations/initial.sql>
-          - .tables comprobar que la tabla se creo
-            - .q para salir de sqlite3
+      - sqlite3 ruta al fichero es la carpeta data 
+      - .read ruta relativa a migrations/initial.sql
+      - .tables comprobar que la tabla se creo
+      - .q para salir de sqlite3
   
 ## 5. lanzar la a plicación.
  
