@@ -1,6 +1,6 @@
 # Proyecto Flask clasic
 ```
-Bootcamp VII
+Bootcamp VII edición proyecto final.
 ```
 ## 1. Instalar dependencias con: 
 ```
@@ -20,7 +20,7 @@ pip install -r requirements.txt
   - Recuerda de Meter tu código [API_KEY](https://pro.coinmarketcap.com).
   - Informar el fichero de base de datos. La ruta debe estar dentro del proyecto carpeta data
  
-## 4. Crear base de datos ejecutando el fichero `migrations/inital.sgl`
+## 4. Crear base de datos ejecutando el fichero *migrations/inital.sgl*
    
    - Puedes hacerlo con un cliente gráfico o con squlite3
    1. Ejecutar lo siguiente : 
