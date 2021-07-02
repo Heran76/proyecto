@@ -16,8 +16,8 @@ pip install -r requirements.txt
   ```
   - Duplicar el fichero config_templete.py
   - Renombrar la copia a config.py
-  - Informar SECRET_KEY. un buen sitio para [crear claves:](https://randomkeygen.com/)
-  - Recuerda de Meter tu código [API_KEY](https://pro.coinmarketcap.com)
+  - Informar SECRET_KEY. un buen sitio para [crear claves:](https://randomkeygen.com/).
+  - Recuerda de Meter tu código [API_KEY](https://pro.coinmarketcap.com).
   - Informar el fichero de base de datos. La ruta debe estar dentro del proyecto carpeta data
   ```
 ## 4. Crear base de datos ejecutando el fichero migrations/inital.sgl
