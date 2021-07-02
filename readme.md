@@ -16,18 +16,18 @@ pip install -r requirements.txt
   ```
   .Duplicar el fichero config_templete.py
   .Renombrar la copia a config.py
-  .Informar SECRET_KEY. un buen sitio para crear claves:https://randomkeygen.com/
-  .Recuerda de Meter tu código API_KEY https://pro.coinmarketcap.com
+  .Informar SECRET_KEY. un buen sitio para [crear claves:] (https://randomkeygen.com/)
+  .Recuerda de Meter tu código [API_KEY] (https://pro.coinmarketcap.com)
   .Informar el fichero de base de datos. La ruta debe estar dentro del proyecto carpeta data
   ```
 ## 4. Crear base de datos ejecutando el fichero migrations/inital.sgl
    ```
    .puedes hacerlo con un cliente gráfico o con squlite3
    .Ejecutar lo siguiente  
-    sqlite3 <ruta al fichero es la carpeta data>
-   .read <ruta relativa a migrations/initial.sql>
-   .tables
-   .q
+    - sqlite3 <ruta al fichero es la carpeta data>
+    - .read <ruta relativa a migrations/initial.sql>
+    - .tables comprobar que la tabla se creo
+    - .q para salir de sqlite3
    ```
 ## 5. lanzar la a plicación.
   ```
