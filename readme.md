@@ -2,7 +2,7 @@
 ```
 Bootcamp VII edición proyecto final.
 ```
-## 1. Instalar dependencias con: 
+## 1. Instalar dependencias 
 ```
 pip install -r requirements.txt
 ```

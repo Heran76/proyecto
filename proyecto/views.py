@@ -16,6 +16,7 @@ API_KEY=app.config['API_KEY']
 
 cryptos = ("BTC","ETH", "LTC", "BNB", "EOS", "XLM", "TRX",  "XRP", "BCH", "USDT", "BSV", "ADA")
 
+
 def api(cryptoFrom, cryptoTo):
 
     url= "https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount=1&symbol={}&convert={}&CMC_PRO_API_KEY=<1ce220db-5044-462d-9bdb-f46d27d98f63>".format(cryptoTo, cryptoFrom)
@@ -322,8 +323,7 @@ def inverter():
         print("Este es el error del status3",errostatus3Error)
         return render_template("status.html", menu='status', errorbd=errorbd, movIn=True)
 
-    # Calculo Valor Actual de todas las monedas en € y totalizarlas en Status y error
-    i = 0
+    # bloque calculae el valor actual de  las monedas en € y totalizarlas en Status 
     monedaValorActual = {}
     valorAct = 0
     for moneda in cryptos:
